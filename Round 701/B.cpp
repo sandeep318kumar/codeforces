@@ -16,21 +16,12 @@ void solve()
     vector<ll>A(n);
     for(ll i=0;i<n;i++){
         cin>>A[i];
-    }
+    }   
     while(q--){
     	ll l, r;
     	cin>>l>>r;
-    	vl B;
-    	B.push_back(1);
-    	for(ll i = l-1;i<r;i++){
-    		B.push_back(A[i]);
-    	}
-    	B.push_back(k);
     	ll res = 0;
-	    for(ll i=1;i<B.size()-1;i++){
-	    	res += (B[i+1] - B[i-1] - 2);
-	    }
-	    res+=2;
+        res += (k - A[l-1] + A[r-1] - 2*(r - l) - 1);
 	    cout<<res<<endl;
     }
     
