@@ -13,19 +13,10 @@ void solve()
 {
     ll n;
     cin>>n;
-    ll i = 1;
-    ll j = sqrt(n);
-    
-    while(i <= j){
-        ll sum = (i*i*i + j*j*j);
-        if(sum == n){
-            cout<<"Yes\n";
-            return;
-        } else if(sum > n){
-            j--;
-        } else i++;
+    vector<ll>A(n);
+    for(ll i=0;i<n;i++){
+        cin>>A[i];
     }
-    cout<<"No\n";
 }
 
 int main()

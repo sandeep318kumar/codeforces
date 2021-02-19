@@ -9,42 +9,49 @@ typedef vector<vl> vll;
 typedef pair<int, int> pi;
 typedef pair<ll, ll> pl;
 
-bool compare(pi a, pi b){
-    return a.first < b.first;
-}
 void solve()
 {
     ll n;
     cin>>n;
-    vector<int>cc(3);
+    vector<ll>x(n), y(n);
     for(ll i=0;i<n;i++){
-        int x;
-        cin>>x;
-        cc[x%3]++;
-        
+        cin>>x[i];
+        cin>>y[i];
     }
-    // 1, 2, 3
-    int res = 0;
-    while(1){
-        for(int i = 0;i<3;i++){
-            if(cc[i] > n/3){
-                int diff = cc[i] - n/3;
-                cc[(i+1)%3] += diff;
-                res += diff;
-                cc[i] -= diff; 
-            }
-        }
 
-        bool flag = true;
-        for(int i = 0;i<3;i++){
-            if(cc[i] != n/3){
-                flag = false;
-                break;
-            }
-        }
-        if(flag)    
-            break;
-    }
+    sort(x.begin(), x.end());
+    sort(y.begin(), y.end());
+
+    int res = 0;
+    
+    if(n%2 != 0){
+    	res = 1;
+    } else{
+    	int loc = n/2;
+    	vector<pair<int, int> > B(4);
+    	B[0] = make_pair(x[loc], y[loc]);
+    	B[1] = make_pair(x[loc-1], y[loc-1]);
+    	B[2] = make_pair(x[loc], y[loc-1]);
+    	B[3] = make_pair(x[loc-1], y[loc]);
+    	
+    	vector<pair<int, int>> A;
+    	A.push_back(B[0]);
+    	res++;
+    	for(int i = 1;i<4;i++){
+    		bool flag = true;
+    		for(int j = 0;j<A.size();j++){
+    			if(B[i].first == A[j].first && B[i].second == A[j].second){
+    				flag = false;
+    				break;
+    			}
+    		}
+    		if(flag){
+    			A.push_back(B[i]);
+    			res++;
+    		}
+    	}
+
+    }	
     cout<<res<<endl;
 }
 
