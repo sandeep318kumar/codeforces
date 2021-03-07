@@ -31,6 +31,7 @@ bool check(int h, int m, int hi, int mi){
 			return false;
 		}
 	}
+	
 	// cout<<"reverse is: "<<rev<<"\n";
 	int newh = (rev[0] - '0') * 10 + (rev[1]- '0');
 	int newm = (rev[2] - '0') * 10 + (rev[3] - '0');

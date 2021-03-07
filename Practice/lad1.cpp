@@ -14,34 +14,40 @@ void solve()
 {
     int n;
     cin>>n;
-    vi A(n);
-    for(int i = 0;i<n;i++){
-        cin>>A[i];
-    }
+    cout<<n;
+    // int n;
+    // cin>>n;
+    // int zero = 0, five = 0;
+    // for(int i=0;i<n;i++){
+    //     int x;
+    //     cin>>x;
+    //     if(x == 0)
+    //         zero++;
+    //     else five++;
+    // }
 
-    int m = 10000;
-    int ind = -1;
-    for(int i=1;i<n;i++){
-        // cout<<m<<", "<<abs(A[i] - A[i-1])<<endl;
-        if(m > abs(A[i] - A[i-1])){
-            // cout<<"Yes\n";
-            m = abs(A[i] - A[i-1]);
-            ind = i;
-        }   
-    }
+    // if(zero == 0){
+    //     cout<<"-1\n";
+    // } else if( five == 0){
+    //     cout<<"0";
+    // } else{
+    //     while((five * 5) % 9 != 0){
+    //         five--;
+    //     }
 
-    if(m > abs(A[n-1] - A[0])){
-        m = abs(A[n-1] - A[0]);
-        ind = n;
-    }
-
-    if(ind != n){
-        cout<<ind<<" "<<ind+1;
-    } else{
-        cout<<n<<" "<<1;
-    }
+    //     if(five == 0){
+    //         cout<<"0";
+    //     } else{
+    //         for(int i=0;i<five;i++){
+    //             cout<<"5";
+    //         }
+    //         for(int i=0;i<zero;i++){
+    //             cout<<"0";
+    //         }
+    //     }
+    // }
+    
 }
-
 int main()
 {
     ios_base::sync_with_stdio(false);
@@ -53,9 +59,9 @@ int main()
     // freopen("output.txt", "w", stdout);
     #endif
 
-    // ll t;
-    // cin>>t;
-    // while(t--)
+    ll t;
+    cin>>t;
+    while(t--)
         solve();
     return 0;
 }

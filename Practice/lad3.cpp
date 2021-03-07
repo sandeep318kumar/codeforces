@@ -9,30 +9,24 @@ typedef vector<vl> vll;
 typedef pair<int, int> pi;
 typedef pair<ll, ll> pl;
 
-bool check(int n1){
-    vector<int>d(10, 0); // we have 10 digits for 0, 1, 2, to 9
-    // and here indexing works in the the same way 
 
-    while(n1){
-        d[n1%10]++; // we have a digit so increase the value at that location by one
-        n1 = n1/10; // divide it by 10
-    }
-    for(auto &x : d){
-        if(x > 1) // if any value is greater than 1 means 2, 3 ..
-            return false; // so means we have seen this digit twice
-    }
-    return true;// if have not returned false so return true and this would be our lucky number
-}
 void solve()
 {
-    int n;
-    cin>>n;
+    ll mod = 1e9+7;
+    ll x, y, n;
+    cin>>x>>y>>n;
 
-    vi A(n+1, 0);
-    A[1] = 1;
-    for(int i = 2;i<=n;i++){
-        
-    }
+    ll c;
+    ll A[6] = { x - y, x, y, y - x, -x, -y};
+
+    // for(auto &i: A){
+    //     cout<<i<<" ";
+    // } 
+    // cout<<endl;
+
+    c = (A[n%6] % mod + mod) % mod;
+    // c = c % mod;
+    cout<<c<<endl;
 }
 
 int main()

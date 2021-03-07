@@ -22,34 +22,37 @@ bool prime(int n){
 bool compare(pi a, pi b){
     return a.first < b.first;
 }
+
+// magic numbers
 void solve()
 {
+    cout<<"hello\n";
     int n;
     cin>>n;
-    vector<pair<int, int>>A;
+    cout<<n<<endl;
+    // int a, b, n;
+    // cin>>a>>b >>n;
 
-    for(int i=0;i<n;i++){
-        int a;
-        cin>>a;
-        A.push_back({a, i+1});
-    }
+    // string num = to_string(a);
+    // for(int i=0;i<n;i++){
+    //     bool flag = true;
+    //     for(int j = 0;j<10;j++){
+    //         string temp = num;
+    //         temp.push_back(j + '0');
+    //         int x = stoi(temp);
+    //         if(x % b == 0){
+    //             flag = false;
+    //             num = temp;
+    //             break;
+    //         }
+    //     }
 
-    sort(A.begin(), A.end(), compare);
-
-    // for(auto ss: A){
-    //     cout<<ss.first<<" "<<ss.second<<endl;
+    //     if(flag){
+    //         cout<<"-1";
+    //         return;
+    //     }
     // }
-
-    if(A.size() == 1){
-        cout<<1;
-        return;
-    }
-
-    if( A[0].first == A[1].first){
-        cout<<"Still Rozdil";
-    } else{
-        cout<<A[0].second;
-    }
+    // cout<<num;
 }
 
 int main()
@@ -63,9 +66,9 @@ int main()
     // freopen("output.txt", "w", stdout);
     #endif
 
-    // ll t;
-    // cin>>t;
-    // while(t--)
+    ll t;
+    cin>>t;
+    while(t--)
         solve();
     return 0;
 }
