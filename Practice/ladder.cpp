@@ -10,39 +10,54 @@ typedef pair<int, int> pi;
 typedef pair<ll, ll> pl;
 // Peter and Book
 
-void solve()
-{
-    int n;
-    cin>>n;
+bool prime(ll x){
 
-    vi A(8, 0);
-    for(int i=1;i<8;i++){
-        cin>>A[i];
+    for(ll i = 2;i*i <= x;i++){
+        if(x % i == 0)
+            return false;
     }
-
-    int i = 0;
-    while(n > 0){
-        n -= A[i];
-        if(n <= 0){
-            cout<<i;
-            return;
-        }
-        if(i == 7){
-            i = 1;
-        } else
-            i++;
-    }
+    return true;
 }
 
-int main()
-{
+bool compare(pi a, pi b){
+    if(a.first == b.first){
+        return a.second < b.second;
+    }
+
+    return a.first > b.first;
+}
+
+void solve(){
+    int n, k;
+    cin>>n>>k;
+
+    vector<pi>A;
+    for(int i=0;i<n;i++){
+        int a, b;
+        cin>>a>>b;
+        A.push_back({a, b});
+    }
+
+    sort(A.begin(), A.end(), compare);
+
+    map<pi, int>mp;
+    for(auto ss: A){
+        // cout<<ss.first<<", "<<ss.second<<endl;
+        mp[ss]++;
+    }
+
+    pi x = A[k-1];
+    cout<<mp[x]<<endl;
+}
+
+int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
     
     #ifndef ONLINE_JUDGE
-    // freopen("input.txt", "r", stdin);
-    // freopen("output.txt", "w", stdout);
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
     #endif
 
     // ll t;

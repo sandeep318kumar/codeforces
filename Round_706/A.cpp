@@ -11,45 +11,50 @@ typedef pair<ll, ll> pl;
 
 void solve()
 {
-	int n;
-	cin>>n;
+    int n, k;
+    cin>>n>>k;
+    string s;
+    cin>>s;
 
-	vi A(n);
-	vector<pair<int, int>>loc(n+1);
-	for(int i=0;i<n;i++){
-		cin>>A[i];
-		loc[A[i]] = {i+1, n-i};
 
-	}
+    int cc = 0;
+    bool flag = false;
 
-	ll res1 = 0, res2 = 0;
+    int i = 0, j = n-1;
+    while(i < j && cc < k){
+    	if(s[i] == s[j]){
+    		cc++;
+    	} else{
+    		flag = true;
+    		break;
+    	}
+    	i++;
+    	j--;
+    }
 
-	int q;
-	cin>>q;
-	for(int i=0;i<q;i++){
-		int a;
-		cin>>a;
-		res1 += loc[a].first;
-		res2 += loc[a].second;
-	}
-	cout<<res1<<" "<<res2;
-
+    if(flag || ( cc != k)){
+    	cout<<"NO\n";
+    } else if( cc == k && ( i <= j)){
+    	cout<<"Yes\n";
+    } else{
+    	cout<<"No\n";
+    }
 }
 
 int main()
 {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    // cout.tie(NULL);
+    cout.tie(NULL);
     
     #ifndef ONLINE_JUDGE
     // freopen("input.txt", "r", stdin);
     // freopen("output.txt", "w", stdout);
     #endif
 
-    // ll t;
-    // cin>>t;
-    // while(t--)
+    ll t;
+    cin>>t;
+    while(t--)
         solve();
     return 0;
 }
