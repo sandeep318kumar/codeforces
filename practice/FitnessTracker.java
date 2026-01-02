@@ -1,0 +1,3 @@
+interface FitnessTracker{
+    void trackSteps();
+}
