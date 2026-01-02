@@ -1,0 +1,24 @@
+classDiagram
+    class Channel {
+        <<interface>>
+        +subscribe(Subscriber)
+        +unsubscribe(Subscriber)
+        +notify()
+    }
+    class YouTubeChannel {
+        -List~Subscriber~ Subscribers
+        -String channelName
+        +upload(String title)
+    }
+    class Subscriber {
+        <<interface>>
+        +update(String context)
+    }
+    class User {
+        -String name
+        +update(String context)
+    }
+
+    Channel <|.. YouTubeChannel
+    Subscriber <|.. User
+    YouTubeChannel --> Subscriber : notifies
