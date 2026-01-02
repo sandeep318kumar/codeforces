@@ -1,0 +1,18 @@
+classDiagram
+    class Parser {
+        <<interface>>
+        +parse(String)
+    }
+    class PdfParser {
+        +parse(String)
+    }
+    class WordParser {
+        +parse(String)
+    }
+    class ParserFactory {
+        +getParser(String) Parser
+    }
+
+    Parser <|.. PdfParser
+    Parser <|.. WordParser
+    ParserFactory ..> Parser : creates
