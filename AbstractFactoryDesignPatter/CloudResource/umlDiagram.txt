@@ -1,0 +1,34 @@
+classDiagram
+    class CloudResourceFactory {
+        <<interface>>
+        +createCompute() ComputeInstance
+        +createStorage() StorageBucket
+    }
+    class AwsResourceFactory {
+        +createCompute() ComputeInstance
+        +createStorage() StorageBucket
+    }
+    class AzureResourceFactory {
+        +createCompute() ComputeInstance
+        +createStorage() StorageBucket
+    }
+    class ComputeInstance {
+        <<interface>>
+        +start()
+    }
+    class StorageBucket {
+        <<interface>>
+        +upload(String)
+    }
+
+    CloudResourceFactory <|.. AwsResourceFactory
+    CloudResourceFactory <|.. AzureResourceFactory
+    ComputeInstance <|.. EC2Instance
+    ComputeInstance <|.. AzureVM
+    StorageBucket <|.. S3Bucket
+    StorageBucket <|.. AzureBlobStorage
+
+    AwsResourceFactory ..> EC2Instance : creates
+    AwsResourceFactory ..> S3Bucket : creates
+    AzureResourceFactory ..> AzureVM : creates
+    AzureResourceFactory ..> AzureBlobStorage : creates

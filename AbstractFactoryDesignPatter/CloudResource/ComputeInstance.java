@@ -1,0 +1,3 @@
+interface ComputeInstance {
+    void start();
+}
