@@ -1,0 +1,178 @@
+classDiagram
+direction TB
+
+%% ===================== ENUMS =====================
+class VehicleType {
+  <<enum>>
+  TWO_WHEELER
+  FOUR_WHEELER
+}
+
+class SpotType {
+  <<enum>>
+  TWO_WHEELER
+  FOUR_WHEELER
+}
+
+class PricingType {
+  <<enum>>
+  HOURLY
+  MINUTE
+  DEFAULT
+}
+
+class PaymentType {
+  <<enum>>
+  UPI
+  CARD
+}
+
+%% ===================== CORE ENTITIES =====================
+class Vehicle {
+  -number : String
+  -type : VehicleType
+  +getType() : VehicleType
+}
+
+class Ticket {
+  -ticketId : String
+  -entryTime : LocalDateTime
+  -spot : ParkingSpot
+  -vehicle : Vehicle
+  +getEntryTime() : LocalDateTime
+  +getSpot() : ParkingSpot
+}
+
+class ParkingFloor {
+  -floorNo : int
+  -spots : List~ParkingSpot~
+  +getAvailableSpots(v:Vehicle) : List~ParkingSpot~
+}
+
+class ParkingSpot {
+  -id : String
+  -type : SpotType
+  -isEmpty : boolean
+  -basePrice : double
+  -vehicle : Vehicle
+  -observers : List~ParkingObserver~
+  +canFit(v:Vehicle) : boolean
+  +park(v:Vehicle) : void
+  +unPark() : void
+  +addObserver(o:ParkingObserver) : void
+  +notifyObservers() : void
+  +isEmpty() : boolean
+  +getBasePrice() : double
+}
+
+%% ===================== OBSERVER =====================
+class ParkingObserver {
+  <<interface>>
+  +onSpotFreed(spot:ParkingSpot) : void
+}
+
+class ParkingAvailabilityDisplay {
+  +onSpotFreed(spot:ParkingSpot) : void
+}
+
+%% ===================== SPOT SELECTION STRATEGY =====================
+class SpotSelectionStrategy {
+  <<interface>>
+  +findSpot(floors:List~ParkingFloor~, v:Vehicle) : ParkingSpot
+}
+
+class NearestToEntranceStrategy {
+  +findSpot(floors, v) : ParkingSpot
+}
+
+class NearestToElevatorStrategy {
+  +findSpot(floors, v) : ParkingSpot
+}
+
+%% ===================== PRICING STRATEGY + DECORATOR =====================
+class PricingStrategy {
+  <<interface>>
+  +calculate(entry:LocalDateTime, exit:LocalDateTime, basePrice:double) : double
+}
+
+class HourlyPricing {
+  +calculate(entry, exit, basePrice) : double
+}
+
+class MinutePricing {
+  +calculate(entry, exit, basePrice) : double
+}
+
+class DefaultPricing {
+  +calculate(entry, exit, basePrice) : double
+}
+
+class PricingDecorator {
+  <<abstract>>
+  -wrapped : PricingStrategy
+  +calculate(entry, exit, basePrice) : double
+}
+
+class TaxDecorator {
+  +calculate(entry, exit, basePrice) : double
+}
+
+class PricingFactory {
+  +get(type:PricingType, tax:boolean) : PricingStrategy
+}
+
+%% ===================== PAYMENT STRATEGY =====================
+class PaymentStrategy {
+  <<interface>>
+  +pay(amount:double) : boolean
+}
+
+class UPIPayment {
+  +pay(amount:double) : boolean
+}
+
+class CardPayment {
+  +pay(amount:double) : boolean
+}
+
+class PaymentFactory {
+  +get(type:PaymentType) : PaymentStrategy
+}
+
+%% ===================== GATES =====================
+class EntranceGate {
+  -floors : List~ParkingFloor~
+  -spotStrategy : SpotSelectionStrategy
+  +generateTicket(v:Vehicle) : Ticket
+}
+
+class ExitGate {
+  -pricingStrategy : PricingStrategy
+  +calculateCost(t:Ticket) : double
+  +processExit(t:Ticket, p:PaymentStrategy) : void
+}
+
+%% ===================== RELATIONSHIPS =====================
+Vehicle --> VehicleType
+Ticket --> Vehicle
+Ticket --> ParkingSpot
+ParkingFloor o-- ParkingSpot
+
+ParkingSpot o-- ParkingObserver
+ParkingObserver <|.. ParkingAvailabilityDisplay
+
+SpotSelectionStrategy <|.. NearestToEntranceStrategy
+SpotSelectionStrategy <|.. NearestToElevatorStrategy
+
+PricingStrategy <|.. HourlyPricing
+PricingStrategy <|.. MinutePricing
+PricingStrategy <|.. DefaultPricing
+PricingStrategy <|-- PricingDecorator
+PricingDecorator <|-- TaxDecorator
+
+PaymentStrategy <|.. UPIPayment
+PaymentStrategy <|.. CardPayment
+
+EntranceGate --> SpotSelectionStrategy
+ExitGate --> PricingStrategy
+ExitGate --> PaymentStrategy
