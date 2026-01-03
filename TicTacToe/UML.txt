@@ -1,0 +1,46 @@
+classDiagram
+    class TicTacToeGame {
+        -Board board
+        -Deque~Player~ players
+        +initializeGame(int size)
+        +startGame() String
+    }
+    
+    class Board {
+        -int size
+        -PlayingPiece[][] board
+        +addPiece(int row, int col, PlayingPiece piece) boolean
+        +getFreeCells() List
+        +printBoard()
+    }
+
+    class Player {
+        -String name
+        -PlayingPiece playingPiece
+        +getName() String
+        +getPlayingPiece() PlayingPiece
+    }
+
+    class PlayingPiece {
+        <<abstract>>
+        -PieceType type
+    }
+
+    class PlayingPieceX {
+    }
+
+    class PlayingPieceO {
+    }
+
+    class PieceType {
+        <<enumeration>>
+        X
+        O
+    }
+
+    TicTacToeGame *-- Board
+    TicTacToeGame *-- Player
+    Player *-- PlayingPiece
+    PlayingPiece <|-- PlayingPieceX
+    PlayingPiece <|-- PlayingPieceO
+    PlayingPiece --> PieceType
