@@ -1,0 +1,98 @@
+classDiagram
+    class ElevatorCar {
+	    -int id
+	    -int currentFloor
+	    -ElevatorDirection movingDirection;
+	    -Door door
+	    +moveElevator(int destinationFloor)
+    }
+
+    class ElevatorDirection {
+	    UP,
+	    DOWN,
+	    IDLE
+    }
+
+    class Door {
+	    -Door state
+	    +openDoor()
+	    +closeDoor()
+    }
+
+    class DoorState {
+	    DOOR_OPEN,
+	    DOOR_CLOSED
+    }
+
+    class ElevatorController {
+	    -ElevatorCar elevatorCar;
+	    -PriorityQueue upMinPQ;
+	    -PriorityQueue downMaxPQ;
+	    +submitRequest(int destinationFloor)
+	    +controlElevator() &lt;&gt;
+    }
+
+    class ElevatorScheduler {
+	    -List controllers
+	    -ElevatorSelectionStrategy strategy
+	    +setStrategy(ElevatorSelectionStrategy st)
+	    +ElevatorController assignElevator(int floor, ElevatorDirection)
+    }
+
+    class ElevatorSelectionStrategy {
+	    +ElevatorController selectElevator(List controllers, int requestFloor, ElevatorDirection dir)
+    }
+
+    class NearestElevatorStrategy {
+	    //
+    }
+
+    class LeastBusyStrategy {
+	    //
+    }
+
+    class ExternalButton {
+	    -ExternalDispatcher extDispatcher
+	    +pressButton(int floor, ElevatorDirection dir)
+    }
+
+    class ExternalDispatcher {
+	    ElevatorScheduler scheduler;
+	    +submitExternalRequest(int floor, ElevatorDirection dir)
+    }
+
+    class internalButton {
+	    -ElevatorController controller;
+	    +pressButton(int floor)
+    }
+
+    class Building {
+	    List floors;
+    }
+
+    class Floor {
+	    int floorNo;
+	    ExternalButton upButton;
+	    ExternalButton downButton;
+	    +pressUpButton()
+	    +pressDownButton()
+    }
+
+	<<enumeration>> ElevatorDirection
+	<<enumeration>> DoorState
+	<<interface>> ElevatorSelectionStrategy
+
+    Door *-- DoorState
+    ElevatorCar *-- ElevatorDirection
+    ElevatorCar --> Door
+    ElevatorController --* ElevatorCar
+    ElevatorScheduler --* ElevatorController
+    ElevatorScheduler --* ElevatorSelectionStrategy
+    ElevatorSelectionStrategy <-- NearestElevatorStrategy
+    ElevatorSelectionStrategy <-- LeastBusyStrategy
+    internalButton --* ElevatorController
+    ExternalButton --* ExternalDispatcher
+    ExternalDispatcher --* ElevatorScheduler
+    ExternalDispatcher --> ElevatorController
+    Building --* Floor
+    Floor --* ExternalButton
