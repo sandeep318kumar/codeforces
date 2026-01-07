@@ -17,5 +17,6 @@ class VehicleRentalSystem {
 
     public void addStore(Store store) {
         stores.add(store);
+        System.out.println("Store with id: " + store.storeId + " city: " + store.location.city + " added to system");
     }
 }

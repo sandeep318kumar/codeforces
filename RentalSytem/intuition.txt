@@ -1,0 +1,45 @@
+Rental System:
+
+User {name, userId}
+Vehicle {vehicleNo, Type, status}
+VehicleType{2W, 4W}
+VehicleStatus{Available, reserved, maintenance}
+VehicleInventoryManager{List<Vehicle>, addVehicle(), removeVehicle(), getAvailableVehicles()}
+
+ReservationType{ daily, hourly}
+ReservationStatus{ Created, confirmed, cancelled}
+Reservation { User, Vehicle, reservationID, dateInterval, reservationStatus, reservationType}
+ReservationRepository{HashMap<String, reservation> reservations, save(), getById(), getByVehicle(), remove()}
+ReservationManager{ReservationRepository, createReservation(), RemoveReservation(), getAllReservationForAVehicle()}
+
+Location { city, address}
+Store{ storeId, location, VehicleInventoryManager}
+DateInterval{ getDays()}
+
+BillingStrategy { <<interface>> calculateAmount()}
+HourlyBillingStategy(calculate)
+DailyBillingStrategy{calculate}
+
+Bill{reservation, amount}
+BillManager{strategy, generateBill()}
+
+PaymentType{UPI, Cash}
+paymentStrategy{<<interface>>pay()}
+upiPayment{pay(amount)}
+cashPayment{pay(amount)}
+PaymentManager{makePayment}
+
+VehicleRentalSystem{getStoreByCity()}
+
+
+User ─────────────┐
+                  │
+Reservation ◄──── ReservationManager ─── ReservationRepository
+   │
+   │
+Vehicle ◄── VehicleInventoryManager ◄── Store ─── Location
+   │
+   │
+Bill ◄── BillManager ─── BillingStrategy ◄── DailyBillingStrategy
+   │
+PaymentManager ─── PaymentStrategy ◄── UPIPaymentStrategy

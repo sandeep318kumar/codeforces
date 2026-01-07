@@ -10,10 +10,13 @@ public class VehicleInventoryManager {
 
     public void addVehicle(Vehicle vehicle) {
         this.vehicles.add(vehicle);
+        System.out.println("Vehicle " + vehicle.vehicleNo + " added to system");
     }
 
     public void removeVehicle(Vehicle vehicle) {
         this.vehicles.remove(vehicle);
+        System.out.println("Vehicle " + vehicle.vehicleNo + " removed from system");
+
     }
 
     public List<Vehicle> getAvailableVehicles(VehicleType type) {
@@ -27,5 +30,7 @@ public class VehicleInventoryManager {
     }
     public void setVehicleStatus(Vehicle vehicle, VehicleStatus status) {
         vehicle.setVehicleStatus(status);
+        System.out.println("Vehicle " + vehicle.vehicleNo + " status set to: " + status);
+
     }
 }

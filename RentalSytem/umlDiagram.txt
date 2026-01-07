@@ -1,0 +1,169 @@
+classDiagram
+
+    class VehicleRentalSystem {
+        -List~Store~ stores
+        +getStoreByCity(city)
+    }
+
+    class Store {
+        -String storeId
+        -Location location
+        -VehicleInventoryManager inventoryManager
+    }
+
+    class Location {
+        -String city
+        -String address
+    }
+
+    class User {
+        -String userId
+        -String name
+    }
+
+    %% =======================
+    %% VEHICLE
+    %% =======================
+
+    class Vehicle {
+        -String vehicleId
+        -VehicleType type
+        -VehicleStatus status
+    }
+
+    class VehicleInventoryManager {
+        -List~Vehicle~ vehicles
+        +getAvailableVehicles(type)
+    }
+
+    class VehicleType {
+        <<enumeration>>
+        HATCHBACK
+        SEDAN
+        SUV
+    }
+
+    class VehicleStatus {
+        <<enumeration>>
+        AVAILABLE
+        RESERVED
+        IN_SERVICE
+    }
+
+    %% =======================
+    %% RESERVATION
+    %% =======================
+
+    class Reservation {
+        -String reservationId
+        -User user
+        -Vehicle vehicle
+        -DateInterval interval
+        -ReservationStatus status
+        -ReservationType type
+    }
+
+    class DateInterval {
+        -LocalDate start
+        -LocalDate end
+        +getDays()
+    }
+
+    class ReservationManager {
+        -ReservationRepository repository
+        +createReservation(user, vehicle, interval)
+    }
+
+    class ReservationRepository {
+        -Map~String,Reservation~ store
+        +save(reservation)
+        +get(id)
+    }
+
+    class ReservationStatus {
+        <<enumeration>>
+        CREATED
+        CONFIRMED
+        CANCELLED
+    }
+
+    class ReservationType {
+        <<enumeration>>
+        DAILY
+    }
+
+    %% =======================
+    %% BILLING
+    %% =======================
+
+    class Bill {
+        -Reservation reservation
+        -double amount
+    }
+
+    class BillManager {
+        -BillingStrategy strategy
+        +generateBill(reservation)
+    }
+
+    class BillingStrategy {
+        <<interface>>
+        +calculateAmount(reservation)
+    }
+
+    class DailyBillingStrategy {
+        +calculateAmount(reservation)
+    }
+
+    %% =======================
+    %% PAYMENT
+    %% =======================
+
+    class PaymentManager {
+        -PaymentStrategy strategy
+        +makePayment(bill)
+    }
+
+    class PaymentStrategy {
+        <<interface>>
+        +pay(amount)
+    }
+
+    class UPIPaymentStrategy {
+        +pay(amount)
+    }
+
+    class PaymentMode {
+        <<enumeration>>
+        UPI
+        CARD
+    }
+
+    %% =======================
+    %% RELATIONSHIPS
+    %% =======================
+
+    VehicleRentalSystem --> Store
+    Store --> Location
+    Store --> VehicleInventoryManager
+    VehicleInventoryManager --> Vehicle
+
+    Reservation --> User
+    Reservation --> Vehicle
+    Reservation --> DateInterval
+
+    ReservationManager --> ReservationRepository
+    ReservationRepository --> Reservation
+
+    Bill --> Reservation
+    BillManager --> Bill
+    BillManager --> BillingStrategy
+    BillingStrategy <|-- DailyBillingStrategy
+
+    PaymentManager --> PaymentStrategy
+    PaymentStrategy <|-- UPIPaymentStrategy
+
+    Vehicle --> VehicleType
+    Vehicle --> VehicleStatus
+    Reservation --> ReservationStatus
+    Reservation --> ReservationType
