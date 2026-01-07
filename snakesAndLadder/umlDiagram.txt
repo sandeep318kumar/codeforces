@@ -1,0 +1,41 @@
+classDiagram
+
+    class Game {
+        -Board board
+        -Queue~User~ players
+        -Dice dice
+        +startGame()
+    }
+
+    class Board {
+        -int size
+        -Cell[] cells
+        +initializeGame(snakes, ladders)
+        +getCell(position)
+    }
+
+    class Cell {
+        -Jump jump
+    }
+
+    class Jump {
+        -int start
+        -int end
+    }
+
+    class Dice {
+        -int count
+        +rollDice()
+    }
+
+    class User {
+        -String id
+        -String name
+        -int position
+    }
+
+    Game --> Board
+    Game --> Dice
+    Game --> User
+    Board *-- Cell
+    Cell o-- Jump

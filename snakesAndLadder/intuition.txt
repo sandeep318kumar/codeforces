@@ -3,7 +3,7 @@ objects
 
 Users {name, id}
 dices { count, rollDice()}
-Board { int size, cell[][], initializeTheGame(), startTheGame()}
+Board { int size, cell[][], initializeTheGame()}
 Game { Board.startTheGame()}
 Cell { jump?}
 jump { int start, int end}

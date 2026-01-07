@@ -16,10 +16,14 @@ class Game {
     public void addPlayers() {
         players.add(new Player("P1", "2929"));
         players.add(new Player("P2", "0772w"));
+        players.add(new Player("P3", "879gaga"));
+        players.add(new Player("P4", "99766gha"));
     }
     
     public void startTheGame() {
+        int moves = 0;
         while(true) {
+            moves++;
             Player currentPlayer = players.removeFirst();
             players.addLast(currentPlayer);
 
@@ -30,9 +34,15 @@ class Game {
             int newPosition = currentPlayer.currentPosition + diceCount;
             newPosition = jumpCheck(newPosition);
 
+            if(newPosition >= board.grid.length * board.grid.length)
+                continue;
+            
             currentPlayer.currentPosition = newPosition;
-            if(currentPlayer.currentPosition >= board.grid.length * board.grid.length - 1 ) {
+            System.out.println("current player turn is: " + currentPlayer.name + " new position is: " + currentPlayer.currentPosition);
+
+            if(currentPlayer.currentPosition == board.grid.length * board.grid.length - 1 ) {
                 System.out.println(currentPlayer.name + " Winner!!");
+                System.out.println("Game finished in moves: " + moves);
                 break;
             }
         }
