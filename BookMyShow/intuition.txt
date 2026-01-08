@@ -1,0 +1,22 @@
+User
+ ↓
+SearchService → City → Theatre → Screen → Show
+ ↓
+SeatSelectionService
+ ↓
+SeatLockManager (CRITICAL)
+ ↓
+Booking
+ ↓
+Payment
+ ↓
+Booking Confirmation
+
+
+City
+ └── Theatre
+      └── Screen
+           └── Show (movie + time)
+                └── ShowSeat (seat + status + price)
+                     └── Booking
+                          └── Payment
