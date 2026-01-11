@@ -1,0 +1,103 @@
+classDiagram
+
+%% =====================
+%% Core Domain Classes
+%% =====================
+
+class ATM {
+    -ATMState state
+    -Card currentCard
+    -Account selectedAccount
+    -CashDispenser dispenser
+    -BankService bankService
+    -User user
+    +setState(state)
+    +getState()
+    +setUser(user)
+    +setCard(card)
+}
+
+class Account {
+    +String accountNo
+    +int balance
+}
+
+class Card {
+    +String cardNo
+}
+
+class User {
+    +String name
+    +Card card
+    +Account account
+}
+
+class BankService {
+    -Map<User, String> allUsers
+    +addUser(user)
+    +setPin(user, pin)
+    +verifyPin(user, pin)
+    +verifyCard(user, card)
+    +updateBalance(user, amount, credit)
+    +getBalance(user)
+}
+
+class CashDispenser {
+    +int amountInAtm
+    +dispenseCash(amount)
+    +addCashToAtm(amount)
+}
+
+%% =====================
+%% State Pattern
+%% =====================
+
+class ATMState {
+    <<abstract>>
+    +addCashToAtm(atm, amount)
+    +insertCard(atm, card)
+    +verifyCard(atm, card)
+    +withdrawMoney(atm, amount)
+    +changeCardPin(atm)
+    +enterCardPin(atm, pin)
+    +dispenseMoney(atm, amount)
+    +ejectCard(atm)
+    +setCardPin(atm, pin)
+}
+
+class IdleState
+class HasCardState
+class TransactionalSelectionState
+class ChangePinState
+class WithdrawState
+class DispenseMoneyState
+class EjectCardState
+
+%% =====================
+%% Inheritance
+%% =====================
+
+ATMState <|-- IdleState
+ATMState <|-- HasCardState
+ATMState <|-- TransactionalSelectionState
+ATMState <|-- ChangePinState
+ATMState <|-- WithdrawState
+ATMState <|-- DispenseMoneyState
+ATMState <|-- EjectCardState
+
+%% =====================
+%% Associations
+%% =====================
+
+ATM --> ATMState : holds
+ATM --> BankService
+ATM --> CashDispenser
+ATM --> User
+ATM --> Card
+ATM --> Account
+
+User --> Card
+User --> Account
+
+BankService --> User
+CashDispenser --> ATM
