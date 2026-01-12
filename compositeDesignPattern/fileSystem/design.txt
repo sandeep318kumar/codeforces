@@ -1,0 +1,3 @@
+FileSystemItem (interface / abstract)
+ ├── File        (leaf)
+ └── Directory   (composite)
