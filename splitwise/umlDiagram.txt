@@ -1,0 +1,79 @@
+classDiagram
+    direction LR
+
+    class Splitwise {
+        -Map<User, List<BalanceEntry>> balances
+        +addUser(User)
+        +addExpense(Expense)
+        +amountRemainingForUser(User)
+        +allTransactionsHistory(User)
+        +settleUpGlobal() List~Settlement~
+        +settleUpGroup(Group) List~Settlement~
+    }
+
+    class User {
+        +String name
+    }
+
+    class Group {
+        +String groupId
+        +String name
+        +List~User~ members
+        +List~Expense~ expenseHistory
+        +addMember(User)
+        +addExpense(Expense)
+        +showGroupHistory()
+    }
+
+    class Expense {
+        +String expenseName
+        +double amount
+        +List~Split~ splits
+        +User paidBy
+        +Group group
+    }
+
+    class Split {
+        <<abstract>>
+        +User user
+        +double amount
+        +calculateAmount(double, int)
+    }
+
+    class EqualSplit
+    class ExactSplit {
+        +double exactAmount
+    }
+    class PercentSplit {
+        +double percent
+    }
+
+    class BalanceEntry {
+        +User user
+        +double amount
+    }
+
+    class Settlement {
+        +User from
+        +User to
+        +double amount
+    }
+
+    %% Relationships
+    Splitwise --> User
+    Splitwise --> BalanceEntry
+    Splitwise --> Settlement
+
+    Group "1" o-- "*" User
+    Group "1" o-- "*" Expense
+
+    Expense "1" --> "*" Split
+    Expense --> User : paidBy
+    Expense --> Group
+
+    Split <|-- EqualSplit
+    Split <|-- ExactSplit
+    Split <|-- PercentSplit
+
+    BalanceEntry --> User
+    Settlement --> User
