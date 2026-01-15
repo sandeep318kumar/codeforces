@@ -1,0 +1,10 @@
+enum MatchEventType {
+    MATCH_STARTED,
+    MATCH_ENDED,
+    WICKET,
+    BALL_BOWLED,
+    OVER_COMPLETED,
+    SCORE_UPDATE,
+    INNINGS_ENDED,
+    INNINGS_STARTED
+}

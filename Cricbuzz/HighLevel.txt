@@ -1,0 +1,35 @@
+Match
+ ├── Team (2)
+ ├── Innings (1 or 2)
+ ├── MatchStatus
+ └── Commentary
+
+Team
+ └── List<Player>
+
+Innings
+ ├── Team (batting)
+ ├── Team (bowling)
+ ├── List<Over>
+ └── Score
+
+Over
+ └── List<Ball>
+
+Ball
+ ├── runs
+ ├── wicket?
+ └── ballType
+
+
+Define Ball Outcome Probabilities
+| Outcome | Probability |
+| ------- | ----------- |
+| Dot (0) | 25%         |
+| 1 run   | 30%         |
+| 2 runs  | 15%         |
+| 4 runs  | 15%         |
+| 6 runs  | 5%          |
+| Wicket  | 5%          |
+| Wide    | 5%          |
+
