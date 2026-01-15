@@ -35,16 +35,16 @@ class Match {
         status = MatchStatus.LIVE;
         innings.add(new Innings(teamA, teamB));
 
-        notifyObservers(new MatchEvent(MatchEventType.MATCH_STARTED, "Match Started " + teamA.name + " vs " + teamB.name, innings.get(0).scorecard));
-        notifyObservers(new MatchEvent(MatchEventType.INNINGS_STARTED, "First Innings started", innings.get(0).scorecard));
+        notifyObservers(new MatchEvent.Builder().type(MatchEventType.MATCH_STARTED).message("Match Started " + teamA.name + " vs " + teamB.name).score(innings.get(0).scorecard).build());
+        notifyObservers(new MatchEvent.Builder().type(MatchEventType.INNINGS_STARTED).message("First Innings started").score(innings.get(0).scorecard).build());
 
     }
 
     public void endMatch() {
-        notifyObservers(new MatchEvent(innings.get(1)));
+        notifyObservers(new MatchEvent.Builder().type(MatchEventType.INNINGS_ENDED).innings(innings.get(1)).build());
         status = MatchStatus.COMPLETED;
         MatchResult result = calculateResult();
-        notifyObservers(new MatchEvent(result));
+        notifyObservers(new MatchEvent.Builder().type(MatchEventType.MATCH_ENDED).result(result).build());
     }
 
     void bowl(Delivery delivery) {
@@ -55,11 +55,11 @@ class Match {
         String prefix = delivery.bowling.name + " to " + delivery.batting.name + ": ";
 
         if(ball.isWicket) {
-            notifyObservers(new MatchEvent(MatchEventType.WICKET, prefix + "Wicket: " + ball.wicket, current.scorecard));
+            notifyObservers(new MatchEvent.Builder().type(MatchEventType.WICKET).message(prefix + "Wicket: " + ball.wicket).score(current.scorecard).build());
         } else if (ball.type == BallType.WIDE) {
-            notifyObservers(new MatchEvent(MatchEventType.SCORE_UPDATE, prefix + "WIDE ball", current.scorecard));
+            notifyObservers(new MatchEvent.Builder().type(MatchEventType.SCORE_UPDATE).message(prefix + "WIDE ball").score(current.scorecard).build());
         } else {
-            notifyObservers(new MatchEvent(MatchEventType.BALL_BOWLED, prefix + "Ball: " + ball.runs + " runs", current.scorecard));
+            notifyObservers(new MatchEvent.Builder().type(MatchEventType.BALL_BOWLED).message(prefix + "Ball: " + ball.runs + " runs").score(current.scorecard).build());
         }
         
         if(status.equals(InningsStatus.ALL_OUT)) {
@@ -68,16 +68,16 @@ class Match {
         }
 
         if(status.equals(InningsStatus.OVER_COMPLETED)) {
-            notifyObservers(new MatchEvent(MatchEventType.OVER_COMPLETED, "Over completed", current.scorecard));
+            notifyObservers(new MatchEvent.Builder().type(MatchEventType.OVER_COMPLETED).message( "Over completed").score( current.scorecard).build());
         }
     }
 
     void startNextInnings() {
         if(innings.size() == 1) {
-            notifyObservers(new MatchEvent(innings.get(0)));
+            notifyObservers(new MatchEvent.Builder().type(MatchEventType.INNINGS_ENDED).innings(innings.get(0)).build());
             innings.add(new Innings(teamB, teamA));
             innings.get(1).target = innings.get(0).scorecard.totalRuns;
-            notifyObservers(new MatchEvent(MatchEventType.MATCH_STARTED, "Second Innings started", innings.get(1).scorecard));
+            notifyObservers(new MatchEvent.Builder().type(MatchEventType.MATCH_STARTED).message( "Second Innings started").score( innings.get(1).scorecard).build());
         }
     }
 

@@ -14,7 +14,8 @@ class BowlerStats {
     }
 
     double overs() {
-        return balls / 6 + (balls % 6)/10;
+        System.out.println("current balls: " + balls);
+        return balls / 6 + ((balls % 6.0)/10);
     }
 
     double economy() {

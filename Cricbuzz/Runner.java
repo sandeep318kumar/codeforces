@@ -4,7 +4,7 @@ import java.util.concurrent.ThreadLocalRandom;
 class Runner {
     public static void main(String[] args) {
         Team india = new Team("India", List.of(new Player("Virat"), new Player("Rohit"), new Player("Sachin")));
-        Team aus = new Team("Aus", List.of(new Player("Warner"), new Player("Smith"), new Player("Starc")));
+        Team aus = new Team("Australia", List.of(new Player("Warner"), new Player("Smith"), new Player("Starc")));
 
         Match match = new Match(aus, india);
         match.addObserver(new CommentaryObserver());
@@ -36,9 +36,9 @@ class Runner {
     private static void playOver(Match match, Player batsman, Player bowler, int[] outcomes) {
         for(int r: outcomes) {
                 if(r == -1) {
-                        match.bowl(new Delivery(Ball.wicket(WicketType.BOWLED), batsman, bowler));
+                        match.bowl(new Delivery(new Ball.Builder().wicket(WicketType.BOWLED).build(), batsman, bowler));
                 } else {
-                        match.bowl(new Delivery(new Ball(r, BallType.NORMAL), batsman, bowler));
+                        match.bowl(new Delivery(new Ball.Builder().runs(r).build(), batsman, bowler));
                 }
         }
     }
@@ -54,32 +54,32 @@ class Runner {
 
                 if (outcome < 25) {
                         // dot ball
-                        match.bowl(new Delivery(new Ball(0, BallType.NORMAL), batsman, bowler));
+                        match.bowl(new Delivery(new Ball.Builder().runs(0).build(), batsman, bowler));
                         legalBalls++;
                 } else if (outcome < 55) {
                         // 1 run
-                        match.bowl(new Delivery(new Ball(1, BallType.NORMAL), batsman, bowler));
+                        match.bowl(new Delivery(new Ball.Builder().runs(1).build(), batsman, bowler));
                         legalBalls++;
 
                 } else if (outcome < 70) {
                         // 2 runs
-                        match.bowl(new Delivery(new Ball(2, BallType.NORMAL), batsman, bowler));
+                        match.bowl(new Delivery(new Ball.Builder().runs(2).build(), batsman, bowler));
                         legalBalls++;
 
                 } else if (outcome < 85) {
                         // 4 runs
-                        match.bowl(new Delivery(new Ball(4, BallType.NORMAL), batsman, bowler));
+                        match.bowl(new Delivery(new Ball.Builder().runs(4).build(), batsman, bowler));
                         legalBalls++;
 
                 } else if (outcome < 90) {
                         // 6 runs
-                        match.bowl(new Delivery(new Ball(6, BallType.NORMAL), batsman, bowler));
+                        match.bowl(new Delivery(new Ball.Builder().runs(6).build(), batsman, bowler));
                         legalBalls++;
 
                 } else if (outcome < 95) {
                         // wicket
                         match.bowl(new Delivery(
-                                Ball.wicket(WicketType.BOWLED),
+                                new Ball.Builder().wicket(WicketType.BOWLED).build(),
                                 batsman,
                                 bowler
                         ));
@@ -87,8 +87,8 @@ class Runner {
 
                 } else {
                         // wide ball (extra run, ball NOT counted)
-                        match.bowl(new Delivery(new Ball(1, BallType.WIDE), batsman, bowler));
+                        match.bowl(new Delivery(new Ball.Builder().wide().build(), batsman, bowler));
                 }
         }
-   }
+    }
 }
