@@ -32,7 +32,7 @@ class Score {
     }
 
     public void display() {
-        System.out.println("Total Runs: " + totalRuns + " wickets: " + wickets.size());
+        System.out.println( totalRuns + "/" + wickets.size());
     }
 
     public double runrate() {

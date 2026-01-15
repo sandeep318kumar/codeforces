@@ -1,0 +1,196 @@
+classDiagram
+
+%% ================= CORE DOMAIN =================
+class Match {
+  -Team teamA
+  -Team teamB
+  -List~Innings~ innings
+  -MatchStatus status
+  -List~MatchObserver~ observers
+  +startMatch()
+  +bowl(Delivery)
+  +startNextInnings()
+  +endMatch()
+  +isInningsLive() boolean
+  +calculateResult() MatchResult
+}
+
+class Innings {
+  -Team battingTeam
+  -Team bowlingTeam
+  -Score scorecard
+  -List~Over~ overs
+  -InningsState state
+  -InningsStatus status
+  +bowlBall(Delivery) InningsStatus
+  +isInProgress() boolean
+}
+
+class InningsState {
+  -Player striker
+  -Player nonStriker
+  -Player bowler
+  -int lastBatsmanIndex
+  -Team battingTeam
+  +rotateStrike()
+  +onWicket()
+  +isAllOut() boolean
+}
+
+class Over {
+  -List~Ball~ currentOver
+  +addBall(Ball)
+  +isComplete() boolean
+}
+
+class Delivery {
+  -Ball ball
+  -Player batting
+  -Player bowling
+}
+
+class Ball {
+  +int runs
+  +boolean isWicket
+  +WicketType wicket
+  +BallType type
+  +wicket(WicketType) Ball
+}
+
+%% ================= SCORE & STATS =================
+class Score {
+  +int totalRuns
+  +List~WicketType~ wickets
+  +int overs
+  +int balls
+  +int totalBalls
+  +updateScore(Ball)
+  +addOver()
+  +runrate() double
+  +display()
+}
+
+class Player {
+  +String name
+  +BatsmanStats batting
+  +BowlerStats bowling
+}
+
+class BatsmanStats {
+  +int totalRuns
+  +int totalBalls
+  +onBall(Ball)
+  +strikeRate() double
+}
+
+class BowlerStats {
+  +int runsConceded
+  +int wickets
+  +int balls
+  +onBall(Ball)
+  +overs() double
+  +economy() double
+}
+
+class Team {
+  +String name
+  +List~Player~ players
+}
+
+%% ================= OBSERVER PATTERN =================
+class MatchObserver {
+  <<interface>>
+  +supports(MatchEventType) boolean
+  +update(MatchEvent)
+}
+
+class LiveScoreObserver
+class CommentaryObserver
+class StatsObserver
+class InningsSummaryObserver
+class ResultObserver
+
+MatchObserver <|.. LiveScoreObserver
+MatchObserver <|.. CommentaryObserver
+MatchObserver <|.. StatsObserver
+MatchObserver <|.. InningsSummaryObserver
+MatchObserver <|.. ResultObserver
+
+%% ================= EVENTS =================
+class MatchEvent {
+  +MatchEventType type
+  +String message
+  +Score scorecard
+  +MatchResult result
+  +Innings innings
+}
+
+class MatchResult {
+  +Team winner
+  +Team loser
+  +String description
+}
+
+%% ================= ENUMS =================
+class BallType {
+  <<enum>>
+  NORMAL
+  WIDE
+  NO_BALL
+}
+
+class WicketType {
+  <<enum>>
+  BOWLED
+  CAUGHT
+  RUN_OUT
+  LBW
+}
+
+class MatchStatus {
+  <<enum>>
+  NOT_STARTED
+  LIVE
+  COMPLETED
+}
+
+class InningsStatus {
+  <<enum>>
+  NOT_STARTED
+  IN_PROGRESS
+  OVER_COMPLETED
+  ALL_OUT
+  COMPLETED
+}
+
+class MatchEventType {
+  <<enum>>
+  MATCH_STARTED
+  MATCH_ENDED
+  INNINGS_STARTED
+  INNINGS_ENDED
+  BALL_BOWLED
+  WICKET
+  SCORE_UPDATE
+  OVER_COMPLETED
+}
+
+%% ================= RELATIONSHIPS =================
+Match "1" --> "2" Team
+Match "1" --> "*" Innings
+Match "1" --> "*" MatchObserver
+Match --> MatchResult
+Match --> MatchEvent
+
+Innings --> Team
+Innings --> Score
+Innings --> InningsState
+Innings --> Over
+
+InningsState --> Player
+Delivery --> Ball
+Delivery --> Player
+
+Player --> BatsmanStats
+Player --> BowlerStats
+Team --> Player

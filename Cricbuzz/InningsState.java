@@ -2,7 +2,7 @@ class InningsState {
     Player striker;
     Player nonStriker;
     Player bowler;
-    int nextBatsmanIndex = 2;
+    int lastBatsmanIndex = 1;
     Team battingTeam;
     
 
@@ -19,12 +19,13 @@ class InningsState {
         nonStriker = temp;
     }
     void onWicket() {
-        if(nextBatsmanIndex < battingTeam.players.size()) {
-            striker = battingTeam.players.get(nextBatsmanIndex++);
+        lastBatsmanIndex++;
+        if(lastBatsmanIndex < battingTeam.players.size()) {
+            striker = battingTeam.players.get(lastBatsmanIndex);
         }
     }
 
     boolean isAllOut() {
-        return nextBatsmanIndex >= battingTeam.players.size();
+        return lastBatsmanIndex >= battingTeam.players.size();
     }
 }

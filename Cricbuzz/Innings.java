@@ -7,6 +7,7 @@ class Innings {
     List<Over> overs;
     InningsState state;
     InningsStatus status = InningsStatus.NOT_STARTED;
+    int target = -1;
 
     Innings(Team batting, Team bowling) {
         this.battingTeam = batting;
@@ -20,6 +21,9 @@ class Innings {
     }
 
     boolean isInProgress() {
+        if(target != -1 && scorecard.totalRuns > target) {
+            status = InningsStatus.COMPLETED;
+        }
         return status != InningsStatus.COMPLETED;
     }
 

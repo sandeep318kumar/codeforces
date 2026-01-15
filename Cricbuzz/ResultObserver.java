@@ -10,7 +10,11 @@ class ResultObserver implements MatchObserver {
 
         System.out.println("=================================");
         System.out.println("🏏 MATCH RESULT");
-        System.out.println(result.winner.name + " " + result.description);
+        if(result.winner != null) {
+            System.out.println(result.winner.name + " " + result.description);
+        } else {
+            System.out.println(result.description);
+        }
         System.out.println("=================================");
     }
 }

@@ -6,6 +6,6 @@ class StatsObserver implements MatchObserver {
 
     @Override
     public void update(MatchEvent event) {
-        System.out.println("[Stats] current run rate: " + event.scorecard.runrate());
+        System.out.println("[Stats] current run rate: " + String.format("%.2f", event.scorecard.runrate()));
     }
 }

@@ -5,7 +5,7 @@ class LiveScoreObserver implements MatchObserver {
     }
     @Override
     public void update(MatchEvent event) {
-        System.out.print("[Live score]");
+        System.out.print("[Live score] ");
         event.scorecard.display();
     }
 

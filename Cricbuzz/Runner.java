@@ -3,40 +3,35 @@ import java.util.concurrent.ThreadLocalRandom;
 
 class Runner {
     public static void main(String[] args) {
-        Team india = new Team("India", List.of(new Player("Virat Kohli"), new Player("Rohit Sharma")));
-        Team aus = new Team("Aus", List.of(new Player("Warner"), new Player("Smith")));
+        Team india = new Team("India", List.of(new Player("Virat"), new Player("Rohit"), new Player("Sachin")));
+        Team aus = new Team("Aus", List.of(new Player("Warner"), new Player("Smith"), new Player("Starc")));
 
-        Match match = new Match(india, aus);
-        match.addObserver(new LiveScoreObserver());
+        Match match = new Match(aus, india);
         match.addObserver(new CommentaryObserver());
+        match.addObserver(new LiveScoreObserver());
         match.addObserver(new StatsObserver());
         match.addObserver(new ResultObserver());
         match.addObserver(new InningsSummaryObserver());
 
         // ================== INNINGS 1 ==================
-        match.startMatch();
-
-        // playOver(match, match.teamA.players.get(0), match.teamB.players.get(0),
+                // playOver(match, match.teamA.players.get(0), match.teamB.players.get(0),
         //         new int[]{1, 4, 0, 2, 6, -1});
 
         // playOver(match, match.teamA.players.get(1), match.teamB.players.get(1),
         //         new int[]{0, 1, 1, 4, 0, 2});
 
-        playRandomOver(match, match.teamA.players.get(0), match.teamB.players.get(0));
-        playRandomOver(match, match.teamA.players.get(1), match.teamB.players.get(1));
+        match.startMatch();
+        play5OverMatch(match);
 
         match.startNextInnings();
-        playRandomOver(match, match.teamB.players.get(0), match.teamA.players.get(0));
-        playRandomOver(match, match.teamB.players.get(0), match.teamA.players.get(0));
-
-        // ================== INNINGS 2 ==================
-        // playOver(match, match.teamB.players.get(0), match.teamA.players.get(0),
-        //         new int[]{4, 4, 1, 1, 6, -1});
-
-        // playOver(match, match.teamB.players.get(1), match.teamA.players.get(1),
-        //         new int[]{1, 1, 2, 1, 0, 4});
+        play5OverMatch(match);
 
         match.endMatch();
+    }
+    private static void play5OverMatch(Match match) {
+        for(int i = 0;i<5;i++) {
+                playRandomOver(match);
+        }
     }
     private static void playOver(Match match, Player batsman, Player bowler, int[] outcomes) {
         for(int r: outcomes) {
@@ -48,10 +43,13 @@ class Runner {
         }
     }
 
-    private static void playRandomOver(Match match, Player batsman, Player bowler) {
+    private static void playRandomOver(Match match) {
         int legalBalls = 0;
 
         while (legalBalls < 6 && match.isInningsLive()) {
+                InningsState state = match.innings.get(match.innings.size() - 1).state;
+                Player batsman = state.striker;
+                Player bowler = state.bowler;
                 int outcome = ThreadLocalRandom.current().nextInt(100);
 
                 if (outcome < 25) {

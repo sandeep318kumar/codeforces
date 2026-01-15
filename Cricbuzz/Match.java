@@ -76,6 +76,7 @@ class Match {
         if(innings.size() == 1) {
             notifyObservers(new MatchEvent(innings.get(0)));
             innings.add(new Innings(teamB, teamA));
+            innings.get(1).target = innings.get(0).scorecard.totalRuns;
             notifyObservers(new MatchEvent(MatchEventType.MATCH_STARTED, "Second Innings started", innings.get(1).scorecard));
         }
     }
