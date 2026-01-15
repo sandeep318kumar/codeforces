@@ -39,7 +39,7 @@ class Innings {
         state.striker.batting.onBall(ball);
         state.bowler.bowling.onBall(ball);
 
-        if(ball.runs % 2 == 1) {
+        if(ball.runs % 2 == 1 && ball.type.equals(BallType.NORMAL)) {
             state.rotateStrike();
         }
 
