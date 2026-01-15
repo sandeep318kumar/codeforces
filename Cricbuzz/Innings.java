@@ -6,6 +6,7 @@ class Innings {
     public Score scorecard;
     List<Over> overs;
     InningsState state;
+    InningsStatus status = InningsStatus.NOT_STARTED;
 
     Innings(Team batting, Team bowling) {
         this.battingTeam = batting;
@@ -15,9 +16,17 @@ class Innings {
         overs.add(new Over());
 
         state = new InningsState(battingTeam.players.get(0), battingTeam.players.get(1), bowlingTeam.players.get(0), battingTeam);
+        this.status = InningsStatus.IN_PROGRESS;
     }
 
-    public boolean bowlBall(Delivery delivery) {
+    boolean isInProgress() {
+        return status != InningsStatus.COMPLETED;
+    }
+
+    public InningsStatus bowlBall(Delivery delivery) {
+        if(status != InningsStatus.IN_PROGRESS) {
+            return status;
+        }
         Over currentOver = overs.get(overs.size() - 1);
         Ball ball = delivery.ball;
         currentOver.addBall(ball);
@@ -32,6 +41,10 @@ class Innings {
 
         if(ball.isWicket) {
             state.onWicket();
+            if(state.isAllOut()) {
+                status = InningsStatus.COMPLETED;
+                return InningsStatus.ALL_OUT;
+            }
         }
 
         if(currentOver.isComplete()) {
@@ -42,8 +55,8 @@ class Innings {
             int idx = bowlingTeam.players.indexOf(state.bowler);
             idx = (idx + 1) % bowlingTeam.players.size();
             state.bowler = bowlingTeam.players.get(idx);
-            return true;
+            return InningsStatus.OVER_COMPLETED;
         }
-        return false;
+        return InningsStatus.IN_PROGRESS;
     }
 }

@@ -50,7 +50,7 @@ class Match {
     void bowl(Delivery delivery) {
         Innings current = innings.get(innings.size() -1);
         Ball ball = delivery.ball;
-        boolean overCompleted = current.bowlBall(delivery);
+        InningsStatus status = current.bowlBall(delivery);
 
         String prefix = delivery.bowling.name + " to " + delivery.batting.name + ": ";
 
@@ -61,8 +61,13 @@ class Match {
         } else {
             notifyObservers(new MatchEvent(MatchEventType.BALL_BOWLED, prefix + "Ball: " + ball.runs + " runs", current.scorecard));
         }
+        
+        if(status.equals(InningsStatus.ALL_OUT)) {
+            startNextInnings();
+            return;
+        }
 
-        if(overCompleted) {
+        if(status.equals(InningsStatus.OVER_COMPLETED)) {
             notifyObservers(new MatchEvent(MatchEventType.OVER_COMPLETED, "Over completed", current.scorecard));
         }
     }
@@ -73,6 +78,11 @@ class Match {
             innings.add(new Innings(teamB, teamA));
             notifyObservers(new MatchEvent(MatchEventType.MATCH_STARTED, "Second Innings started", innings.get(1).scorecard));
         }
+    }
+
+    boolean isInningsLive() {
+        return status == MatchStatus.LIVE &&
+            innings.get(innings.size() - 1).isInProgress();
     }
 
     MatchResult calculateResult() {

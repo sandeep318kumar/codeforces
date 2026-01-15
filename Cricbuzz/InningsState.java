@@ -4,6 +4,7 @@ class InningsState {
     Player bowler;
     int nextBatsmanIndex = 2;
     Team battingTeam;
+    
 
     InningsState(Player striker, Player nonStriker, Player bowler, Team batting) {
         this.striker = striker;
@@ -21,5 +22,9 @@ class InningsState {
         if(nextBatsmanIndex < battingTeam.players.size()) {
             striker = battingTeam.players.get(nextBatsmanIndex++);
         }
+    }
+
+    boolean isAllOut() {
+        return nextBatsmanIndex >= battingTeam.players.size();
     }
 }
