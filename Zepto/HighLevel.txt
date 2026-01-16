@@ -1,0 +1,12 @@
+User
+ ↓
+Catalog → Product → Inventory
+ ↓
+Cart → CheckoutFacade
+ ↓
+OrderService → InvoiceService
+ ↓
+PaymentService
+
+
+

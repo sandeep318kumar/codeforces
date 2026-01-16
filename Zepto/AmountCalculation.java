@@ -1,0 +1,3 @@
+interface AmountCalculation {
+    double calculateAmount();
+}

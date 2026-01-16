@@ -1,0 +1,7 @@
+enum CategoryType {
+    GROCERIES,
+    DAILY_ESSENTIALS,
+    FRESH_PRODUCE,
+    PERSONAL_CARE,
+    HOUSEHOLD
+}
