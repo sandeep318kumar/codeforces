@@ -1,0 +1,37 @@
+classDiagram
+    direction LR
+
+    class Shape {
+        <<abstract>>
+        -Color color
+        +draw()
+    }
+
+    class Circle {
+        +draw()
+    }
+
+    class Square {
+        +draw()
+    }
+
+    class Color {
+        <<interface>>
+        +applyColor()
+    }
+
+    class Red {
+        +applyColor()
+    }
+
+    class Blue {
+        +applyColor()
+    }
+
+    Shape <|-- Circle
+    Shape <|-- Square
+
+    Color <|.. Red
+    Color <|.. Blue
+
+    Shape --> Color : "bridge"
