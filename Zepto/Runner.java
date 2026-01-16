@@ -19,10 +19,10 @@ class Runner {
 
         Cart cart = new Cart();
         cart.addProductToCart(p1, 2);
-        cart.addProductToCart(p2, 6);
+        cart.addProductToCart(p2, 2);
 
         CheckoutService checkout = new CheckoutService(inventory);
-        checkout.checkout(cart);
+        Order order = checkout.checkout(u, cart);
 
         platform.displayAllProducts();
     }

@@ -10,3 +10,16 @@ PaymentService
 
 
 
+Cart
+  ↓
+Order (CREATED)
+  ↓
+AmountCalculation
+  ↓
+Payment
+  ↓
+Inventory update
+  ↓
+Order CONFIRMED
+  ↓
+Invoice generated
