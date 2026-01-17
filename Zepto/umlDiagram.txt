@@ -1,0 +1,65 @@
+classDiagram
+    class AmountCalculation {
+        <<interface>>
+        +calculateAmount() double
+    }
+    class BasicAmountCalculator {
+        +Cart cart
+        +calculateAmount() double
+    }
+    class AmountCalculatorDecorator {
+        <<abstract>>
+        +AmountCalculation basic
+    }
+    class AddTaxes {
+        +calculateAmount() double
+    }
+    class AddDeliveryFee {
+        +calculateAmount() double
+    }
+
+    AmountCalculation <|.. BasicAmountCalculator
+    AmountCalculation <|.. AmountCalculatorDecorator
+    AmountCalculatorDecorator <|-- AddTaxes
+    AmountCalculatorDecorator <|-- AddDeliveryFee
+    AmountCalculatorDecorator o-- AmountCalculation
+
+    class Inventory {
+        +Map~Product, InventoryItem~ stock
+        +reserve(Product, int) boolean
+        +release(Product, int) void
+    }
+    class InventoryItem {
+        +Product product
+        +int quantity
+        +ReentrantLock lock
+        +reserve(int) boolean
+        +release(int) void
+    }
+    Inventory "1" *-- "many" InventoryItem
+
+    class CheckoutService {
+        +Inventory inventory
+        +checkout(User, Cart) Order
+    }
+    CheckoutService ..> Order
+    CheckoutService ..> AmountCalculation
+
+    class Order {
+        +String orderId
+        +double totalAmount
+        +OrderStatus status
+        +Invoice invoice
+    }
+    class Cart {
+        +List~CartItem~ itemsInCart
+    }
+    class Product {
+        +String name
+        +CategoryType category
+        +int price
+    }
+
+    Cart "1" *-- "many" CartItem
+    CartItem --> Product
+    Order "1" *-- "many" OrderItem
