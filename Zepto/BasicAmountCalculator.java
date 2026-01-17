@@ -7,9 +7,9 @@ class BasicAmountCalculator implements AmountCalculation {
 
     @Override
     public double calculateAmount() {
-        BigDecimal amount = BigDecimal.ZERO;
+        int amount = 0;
         for(CartItem item: cart.itemsInCart) {
-            amount = amount.add(BigDecimal.valueOf(item.product.price ).multiply(BigDecimal.valueOf(item.quantity));
+            amount += (item.product.price ) * item.quantity;
         }
         return amount;
     }

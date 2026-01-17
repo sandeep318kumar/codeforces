@@ -18,4 +18,11 @@ class Platform {
                 System.out.println(prod.name + " : ₹" + prod.price + " category: " + prod.category);
         }
     }
+
+    void displayInventoryWithQuantity() {
+        System.out.println("======Displaying all Products with Quantity===========");
+        inventory.stock.forEach((product, item) -> {
+            System.out.println(product.name + " : ₹" + product.price + " remaining: " + item.quantity);
+        });
+    }
 }
