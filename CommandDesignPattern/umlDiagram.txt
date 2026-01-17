@@ -1,0 +1,32 @@
+classDiagram
+
+
+    class Command {
+        <<interface>>
+        +execute()
+        +undo()
+    }
+
+    class ConcreteCommand {
+        -receiver
+        +execute()
+        +undo()
+    }
+
+    class Receiver {
+        +action()
+    }
+
+    class Invoker {
+        -command
+        +setCommand(Command)
+        +pressButton()
+    }
+
+    %% class Client
+
+    Command <|.. ConcreteCommand
+    ConcreteCommand --> Receiver
+    Invoker --> Command
+    %% Client --> ConcreteCommand
+    %% Client --> Invoker
