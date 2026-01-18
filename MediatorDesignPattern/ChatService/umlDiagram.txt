@@ -1,0 +1,32 @@
+classDiagram
+    class ChatMediator {
+        <<interface>>
+        +sendMessage(String msg, User sender)
+        +addUser(User user)
+    }
+
+    class ChatRoom {
+        -List~User~ users
+        +addUser(User user)
+        +sendMessage(String msg, User sender)
+    }
+
+    class User {
+        <<abstract>>
+        #ChatMediator mediator
+        #String name
+        +User(ChatMediator mediator, String name)
+        +send(String msg)*
+        +receive(String msg, User sender)*
+    }
+
+    class ChatUser {
+        +send(String msg)
+        +receive(String msg, User sender)
+    }
+
+
+    ChatMediator <|.. ChatRoom : implements
+    User <|-- ChatUser : extends
+    ChatRoom o-- User : aggregates (list of users)
+    User --> ChatMediator : communicates via
