@@ -3,12 +3,25 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 class Runner {
     public static void main(String[] args) throws InterruptedException {
+
         User u = new User("Phil", "Marathahalli 560037");
         Product p1 = new Product("Nandini Milk", CategoryType.DAILY_ESSENTIALS, 28);
         Product p2 = new Product("Muscle Blaze Oats", CategoryType.GROCERIES, 560);
         Product p3 = new Product("Wooden knife", CategoryType.GROCERIES, 100);
         Product p4 = new Product("Washing powder", CategoryType.GROCERIES, 976);
         Product p5 = new Product("Fresh Guava", CategoryType.FRESH_PRODUCE, 90);
+
+        ProductCatalogue catalogue = new ProductCatalogue();
+        catalogue.addProduct(p1);
+        catalogue.addProduct(p2);
+        catalogue.addProduct(p3);
+
+        Iterator<Product> iterator = catalogue.createIterator();
+
+        while(iterator.hasNext()) {
+            Product p = iterator.next();
+            System.out.println(p.name + " : ₹" + p.price);
+        }
 
         Inventory inventory = new Inventory();
         inventory.addProduct(p1, 15);

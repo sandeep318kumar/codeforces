@@ -1,0 +1,30 @@
+classDiagram
+    direction LR
+
+    class Iterator {
+        <<interface>>
+        +hasNext()
+        +next()
+    }
+
+    class ProductIterator {
+        -products
+        -index
+        +hasNext()
+        +next()
+    }
+
+    class Aggregate {
+        <<interface>>
+        +createIterator()
+    }
+
+    class ProductCatalog {
+        -products
+        +addProduct()
+        +createIterator()
+    }
+
+    Iterator <|.. ProductIterator
+    Aggregate <|.. ProductCatalog
+    ProductIterator --> ProductCatalog
