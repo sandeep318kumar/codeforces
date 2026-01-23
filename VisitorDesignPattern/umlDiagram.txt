@@ -1,0 +1,27 @@
+classDiagram
+    class Visitor {
+        <<interface>>
+        +visitElementA(ElementA)
+        +visitElementB(ElementB)
+    }
+    class ConcreteVisitor {
+        +visitElementA(ElementA)
+        +visitElementB(ElementB)
+    }
+    class Element {
+        <<interface>>
+        +accept(Visitor)
+    }
+    class ElementA {
+        +accept(Visitor)
+        +operationA()
+    }
+    class ElementB {
+        +accept(Visitor)
+        +operationB()
+    }
+
+    Visitor <.. Element : uses
+    Element <|.. ElementA
+    Element <|.. ElementB
+    Visitor <|.. ConcreteVisitor

@@ -1,0 +1,35 @@
+classDiagram
+    class HotelElement {
+        <<interface>>
+        +accept(HotelVisitor visitor)
+    }
+    class SingleRoom {
+        +int roomNumber
+        +boolean isOccupied
+        +accept(HotelVisitor visitor)
+    }
+    class DeluxeSuite {
+        +boolean spaAccess
+        +accept(HotelVisitor visitor)
+    }
+    class HotelVisitor {
+        <<interface>>
+        +visit(SingleRoom room)
+        +visit(DeluxeSuite suite)
+    }
+    class BookingVisitor {
+        +visit(SingleRoom room)
+        +visit(DeluxeSuite suite)
+    }
+    class PricingVisitor {
+        +double totalPrice
+        +visit(SingleRoom room)
+        +visit(DeluxeSuite suite)
+    }
+
+    HotelElement <|.. SingleRoom
+    HotelElement <|.. DeluxeSuite
+    HotelVisitor <|.. BookingVisitor
+    HotelVisitor <|.. PricingVisitor
+    SingleRoom ..> HotelVisitor : accepts
+    DeluxeSuite ..> HotelVisitor : accepts
