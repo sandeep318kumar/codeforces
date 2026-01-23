@@ -1,0 +1,21 @@
+classDiagram
+    direction LR
+
+    class Originator {
+        -state
+        +save(): Memento
+        +restore(m: Memento)
+    }
+
+    class Memento {
+        -state
+    }
+
+    class Caretaker {
+        -history: List<Memento>
+        +add(m: Memento)
+        +get(index): Memento
+    }
+
+    Originator --> Memento : creates
+    Caretaker o-- Memento : stores

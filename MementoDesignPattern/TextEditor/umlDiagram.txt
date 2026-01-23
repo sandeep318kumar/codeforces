@@ -1,0 +1,24 @@
+classDiagram
+
+    class TextEditor {
+        -content: String
+        +type(text: String)
+        +getContent(): String
+        +save(): EditorMemento
+        +restore(memento: EditorMemento)
+    }
+
+    class EditorMemento {
+        -content: String
+        +getContent(): String
+    }
+
+    class History {
+        -history: Stack<EditorMemento>
+        +save(memento: EditorMemento)
+        +undo(): EditorMemento
+    }
+
+    TextEditor --> EditorMemento : creates
+    History o-- EditorMemento : stores
+    TextEditor ..> History : uses
