@@ -1,5 +1,11 @@
 class MyRunnable implements Runnable {
+    String name;
+
+    MyRunnable(String name) {
+        this.name = name;
+    }
+
     public void run() {
-        System.out.println("Runnable thread is running...");
+        System.out.println( name + " Runnable thread is running...");
     }
 }
