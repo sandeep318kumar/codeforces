@@ -109,20 +109,22 @@ void solve()
 
 int main()
 {
+    // use code runner for C++ in vs code and have input and output.txt file. also modify code runner executer map to this.code-runner.executorMap
+    // "cpp": "cd $dir && mkdir -p build && g++ $fileName -o build/$fileNameWithoutExt && build/$fileNameWithoutExt < input.txt > output.txt",
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
     
     #ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
+    // freopen("input.txt", "r", stdin);
+    // freopen("output.txt", "w", stdout);
     #endif
 
     ll t;
     cin>>t;
     while(t--){ 
         solve();
-        // cerr<<"time taken : "<<(float)clock()/CLOCKS_PER_SEC<<" secs"<<endl;
+        // cerr<<"Time taken : "<<(float)clock()/CLOCKS_PER_SEC<<" secs"<<endl;
     }
     return 0;
 }

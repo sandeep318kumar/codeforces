@@ -95,7 +95,38 @@ typedef vector<vl> vll;
 typedef pair<int, int> pi;
 typedef pair<ll, ll> pl;
 // typedef for(int i = 0;i<n;i++) fori(n);
+const int INF = 1e9;
 
+vector<vector<vector<int>>>dp;
+// b1 for (, )
+// b2 for [, ]
+int check(string &s, int n, int i, int b1, int b2) {
+    if(b1 < 0 || b2 < 0) return INF;
+    if(i == n) {
+        if(b1 == 0 && b2 == 0) return 0;
+        return INF;
+    }
+
+    if(dp[i][b1][b2] != -1) return dp[i][b1][b2];
+    // 4 brackets to put and try. (, ), [, ]
+    int ans = INF;
+    // trying (
+    ans = min(ans, (s[i] != '(') + check(s, n, i + 1, b1 + 1, b2));
+
+    // trying )
+    if(b1 > 0) {
+        ans = min(ans, (s[i] != ')') + check(s, n, i + 1, b1 - 1, b2));
+    }
+
+    // trying [
+    ans = min(ans, (s[i] != '[' ) + check(s, n, i + 1, b1, b2 + 1));
+
+    // trying ].
+    if(b2 > 0) {
+        ans = min(ans, (s[i] != ']') + check(s, n, i + 1, b1, b2 - 1));
+    }
+    return dp[i][b1][b2] = ans;
+}
 void solve()
 {
     int n;
@@ -103,68 +134,29 @@ void solve()
     string s;
     cin>> s;
 
-    vi vis(n, 0);
-
-    stack<int> a, b;
+    dp.assign(n+1, vector<vector<int>>(n+1, vector<int>(n + 1, INF)));
+    dp[0][0][0] = 0;
     for(int i = 0;i<n;i++) {
-        if(s[i] == '(') a.push(i);
-        else if(s[i] == ')') {
-            if(!a.empty()) {
-                // found a matching pair.
-                vis[i] = 1;
-                vis[a.top()] = 1;
-                a.pop();
+        for (int b1 = 0;b1 <=i;b1++) {
+            for(int b2 = 0;b2 <= i;b2++) {
+                if(dp[i][b1][b2] == INF) continue;
+                int curr = dp[i][b1][b2];
+                
+                // calculate 4 ways now (, ), [, ]
+                dp[i + 1][b1 + 1][b2] = min(dp[i+1][b1 + 1][b2], curr + (s[i] != '(')); // (
+                if(b1 > 0) {
+                    dp[i+1][b1 - 1][b2] = min(dp[i+1][b1 -1][b2], curr + (s[i] != ')')); // )
+                }
+
+                dp[i+1][b1][b2 + 1] = min(dp[i + 1][b1][b2 + 1], curr + (s[i] != '[')); // [
+                if(b2 > 0) {
+                    dp[i + 1][b1][b2 - 1] = min(dp[i + 1][b1][b2 - 1], curr + (s[i] != ']'));
+                }
             }
         }
     }
-
-    for(int i = 0;i< n;i++) {
-        if(s[i] == '[') b.push(i);
-        else if(s[i] == ']'){
-            if(!b.empty()) {
-                vis[i] = 1;
-                vis[b.top()] = 1;
-                b.pop();
-            }
-        }
-    }
-
-    // now I'll have few open and close brackets which didn't match.
-    vector<int> open, close;
-
-    for(int i = 0;i<n;i++) {
-        if(vis[i] == 0 && (s[i] == '(' || s[i] == '[')) {
-            open.push_back(i);
-        } 
-        if(vis[i] == 0 && (s[i] == ')' || s[i] == ']')) {
-            close.push_back(i);
-        }
-    }
-
-    // we can match 1 to another for all cases of these 3 {open open, open close, close close} => flip one.
-    // in one case when close open or last close appear before first open and it is odd then we have to flip twice => 2.
-    // for this ))[[ -> ans is 2, we can flip 1st and 4th.
-
-    int ans = (open.size() + close.size()) / 2;
-    // cout << "open ";
-    // for(int i: open) {
-    //     cout << i<< " ";
-    // }
-    // cout << "\nclose ";
-    // for(int i : close) {
-    //     cout << i << " ";
-    // }
-    // cout << endl;
-    if(close.size() & 1) {
-        if(open.empty()) {
-            // bad pair.
-            ans++;
-        } else {
-            if(close.back() < open[0]) ans++;
-        }
-    }
-
-    cout << ans << "\n";
+    cout << dp[n][0][0] << endl;
+    // cout << check(s, n, 0, 0, 0) << "\n";
 }
 
 int main()
@@ -182,7 +174,7 @@ int main()
     cin>>t;
     while(t--){ 
         solve();
-        // cerr<<"time taken : "<<(float)clock()/CLOCKS_PER_SEC<<" secs"<<endl;
+        // cerr<<"Time taken: "<<(float)clock()/CLOCKS_PER_SEC<<" secs"<<endl;
     }
     return 0;
 }

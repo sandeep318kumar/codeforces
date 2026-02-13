@@ -1,9 +1,6 @@
-# Ignore everything
-*
-# But don't ignore directories
-!*/
-# And don't ignore .cpp or .h files
-!*.cpp
-!*.h
-!*.gitignore
-!*.txt
+*.exe
+.cph
+*.bin
+build/
+input.txt
+output.txt
