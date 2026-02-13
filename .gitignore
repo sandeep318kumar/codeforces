@@ -1,3 +1,9 @@
-*.exe
-.cph
-*.bin
+# Ignore everything
+*
+# But don't ignore directories
+!*/
+# And don't ignore .cpp or .h files
+!*.cpp
+!*.h
+!*.gitignore
+!*.txt
