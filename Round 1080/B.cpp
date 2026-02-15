@@ -1,4 +1,3 @@
- // Author -> Sandeep Kumar: sk921815
  #ifndef _GLIBCXX_NO_ASSERT
   #include <cassert>
   #endif
@@ -88,30 +87,61 @@
   #endif
 using namespace std;
 
-typedef long long ll;
+typedef long long int ll;
 typedef vector<int> vi;
 typedef vector<ll> vl;
 typedef vector<vi> vvi;
 typedef vector<vl> vll;
 typedef pair<int, int> pi;
 typedef pair<ll, ll> pl;
-// typedef for(int i = 0;i<n;i++) fori(n);
+
 
 void solve()
 {
     int n;
     cin>> n;
-    vi a(n);
-    for(int i = 0;i< n;i++) {
-        cin>> a[i];
+    vi A(n);
+    for(int i= 0;i<n;i++) {
+        cin>> A[i];
     }
 
+    bool flag = true;
+    for(int i = 1;i <= n;i++) {
+        // i value should exists in this i or 2 * i or 2 * 2 * i.. or dividing by 2
+        bool exists = false;
+        int j = i;
+        while( j <= n) {
+            if(A[j-1] == i) {
+                exists = true;
+                break;
+            }
+            j = 2 * j;
+        }
+
+        j = i;
+        while( j >= 1) {
+            if(A[j-1] == i) {
+                exists = true;
+                break;
+            }
+            if(j % 2 == 0) {
+                j = j / 2;
+            } else 
+                break;
+        }
+
+        if(!exists) {
+            flag = false;
+            break;
+        }
+    }
+    
+    if(flag) cout << "YES\n";
+    else cout << "NO\n";
 }
 
 int main()
 {
-    // use code runner for C++ in vs code and have input and output.txt file. also modify code runner executer map to this.code-runner.executorMap
-    // "cpp": "cd $dir && mkdir -p build && g++ $fileName -o build/$fileNameWithoutExt && build/$fileNameWithoutExt < input.txt > output.txt",
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
@@ -125,7 +155,7 @@ int main()
     cin>>t;
     while(t--){ 
         solve();
-        // cerr<<"Time taken : "<<(float)clock()/CLOCKS_PER_SEC<<" secs"<<endl;
+        // cerr<<"time taken : "<<(float)clock()/CLOCKS_PER_SEC<<" secs"<<endl;
     }
     return 0;
 }

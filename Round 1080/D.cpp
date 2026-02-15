@@ -101,11 +101,26 @@ void solve()
 {
     int n;
     cin>> n;
-    vi a(n);
-    for(int i = 0;i< n;i++) {
-        cin>> a[i];
+    vl f(n + 1);
+    vi a(n + 1);
+    for(int i = 1;i<=n;i++) {
+        cin>> f[i];
     }
+    ll f_first = f[1];
+    ll f_last = f[n];
+    for(int i = 2;i<=n-1;i++) {
+        a[i] = ((f[i + 1] - f[i]) - (f[i] - f[i - 1])) / 2;
+        f_first -= a[i] * ( i - 1);
+        f_last -= a[i] * (n - i);
+    }
+    a[1] = f_last / (n - 1);
+    a[n] = f_first / (n - 1);
 
+
+    for(int i = 1;i<=n;i++) {
+        cout << a[i] << " ";
+    }
+    cout << endl;
 }
 
 int main()

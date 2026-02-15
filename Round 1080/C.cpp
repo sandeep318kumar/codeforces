@@ -1,4 +1,3 @@
- // Author -> Sandeep Kumar: sk921815
  #ifndef _GLIBCXX_NO_ASSERT
   #include <cassert>
   #endif
@@ -88,30 +87,51 @@
   #endif
 using namespace std;
 
-typedef long long ll;
+typedef long long int ll;
 typedef vector<int> vi;
 typedef vector<ll> vl;
 typedef vector<vi> vvi;
 typedef vector<vl> vll;
 typedef pair<int, int> pi;
 typedef pair<ll, ll> pl;
-// typedef for(int i = 0;i<n;i++) fori(n);
 
+int sum(int n) {
+    int d = 0;
+    while(n) {
+        d += n % 10;
+        n = n / 10;
+    }
+    return d;
+}
 void solve()
 {
     int n;
     cin>> n;
-    vi a(n);
-    for(int i = 0;i< n;i++) {
-        cin>> a[i];
+    vi A(n);
+    vector<bool> f(n, false);
+    int ans = 0;
+    for(int i= 0;i<n;i++) {
+        cin>> A[i];
     }
+
+    for(int i = 1;i<n;i++) {
+        if(A[i - 1] == A[i] || A[i - 1] == 7 - A[i]) {
+            f[i] = true;
+        }
+    }
+
+    for(int i =1;i<n;i++) {
+        if(f[i] && f[i-1]) {
+            f[i] = false;
+        }
+        ans += f[i] ? 1 : 0;
+    }
+    cout << ans << endl;
 
 }
 
 int main()
 {
-    // use code runner for C++ in vs code and have input and output.txt file. also modify code runner executer map to this.code-runner.executorMap
-    // "cpp": "cd $dir && mkdir -p build && g++ $fileName -o build/$fileNameWithoutExt && build/$fileNameWithoutExt < input.txt > output.txt",
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
@@ -125,7 +145,7 @@ int main()
     cin>>t;
     while(t--){ 
         solve();
-        // cerr<<"Time taken : "<<(float)clock()/CLOCKS_PER_SEC<<" secs"<<endl;
+        // cerr<<"time taken : "<<(float)clock()/CLOCKS_PER_SEC<<" secs"<<endl;
     }
     return 0;
 }
